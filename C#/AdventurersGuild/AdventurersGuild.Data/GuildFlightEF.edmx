@@ -1,0 +1,365 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="AdventurersGuildDatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ADVENTURER">
+          <Key>
+            <PropertyRef Name="ADVENTURERID" />
+          </Key>
+          <Property Name="ADVENTURERID" Type="numeric" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="PERSONID" Type="numeric" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="JOBID" Type="numeric" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="RATING" Type="varchar" MaxLength="2" />
+          <Property Name="SIGNUP_DATE" Type="datetime" />
+          <Property Name="STATUS" Type="varchar" MaxLength="15" />
+        </EntityType>
+        <EntityType Name="CLIENT">
+          <Key>
+            <PropertyRef Name="CLIENTID" />
+          </Key>
+          <Property Name="CLIENTID" Type="numeric" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="PERSONID" Type="numeric" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="BALANCE" Type="numeric" Precision="10" Scale="0" />
+          <Property Name="ADDRESS" Type="varchar" MaxLength="20" />
+          <Property Name="SIGNUP_DATE" Type="datetime" />
+          <Property Name="JOB_COUNT" Type="numeric" Precision="10" Scale="0" />
+        </EntityType>
+        <EntityType Name="JOB">
+          <Key>
+            <PropertyRef Name="JOBID" />
+          </Key>
+          <Property Name="JOBID" Type="numeric" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="CLIENTID" Type="numeric" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="REGION" Type="varchar" MaxLength="30" />
+          <Property Name="REWARD" Type="numeric" Precision="10" Scale="0" />
+          <Property Name="CHALLANGE_RATING" Type="varchar" MaxLength="2" />
+          <Property Name="START_DATE" Type="datetime" />
+          <Property Name="END_DATE" Type="datetime" />
+        </EntityType>
+        <EntityType Name="MONSTER">
+          <Key>
+            <PropertyRef Name="MONSTERID" />
+          </Key>
+          <Property Name="MONSTERID" Type="numeric" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="JOBID" Type="numeric" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="CHALLANGE_RATING" Type="varchar" MaxLength="2" />
+          <Property Name="NAME" Type="varchar" MaxLength="20" />
+          <Property Name="WEAKNESSES" Type="varchar" MaxLength="40" />
+          <Property Name="RESISTANCES" Type="varchar" MaxLength="40" />
+        </EntityType>
+        <EntityType Name="PERSON">
+          <Key>
+            <PropertyRef Name="PERSONID" />
+          </Key>
+          <Property Name="PERSONID" Type="numeric" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="CLIENTID" Type="numeric" Precision="10" Scale="0" />
+          <Property Name="ADVENTURERID" Type="numeric" Precision="10" Scale="0" />
+          <Property Name="FIRST_NAME" Type="varchar" MaxLength="20" />
+          <Property Name="LAST_NAME" Type="varchar" MaxLength="20" />
+          <Property Name="GUILD_NAME" Type="varchar" MaxLength="20" />
+        </EntityType>
+        <Association Name="ADVENTURERS_FOREIGN_KEY">
+          <End Role="JOB" Type="Self.JOB" Multiplicity="1" />
+          <End Role="ADVENTURER" Type="Self.ADVENTURER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="JOB">
+              <PropertyRef Name="JOBID" />
+            </Principal>
+            <Dependent Role="ADVENTURER">
+              <PropertyRef Name="JOBID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CLIENTS_FOREIGN_KEY">
+          <End Role="PERSON" Type="Self.PERSON" Multiplicity="1" />
+          <End Role="CLIENT" Type="Self.CLIENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PERSON">
+              <PropertyRef Name="PERSONID" />
+            </Principal>
+            <Dependent Role="CLIENT">
+              <PropertyRef Name="PERSONID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="JOBS_FOREIGN_KEY">
+          <End Role="CLIENT" Type="Self.CLIENT" Multiplicity="1" />
+          <End Role="JOB" Type="Self.JOB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CLIENT">
+              <PropertyRef Name="CLIENTID" />
+            </Principal>
+            <Dependent Role="JOB">
+              <PropertyRef Name="CLIENTID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="MONSTERS_FOREIGN_KEY">
+          <End Role="JOB" Type="Self.JOB" Multiplicity="1" />
+          <End Role="MONSTER" Type="Self.MONSTER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="JOB">
+              <PropertyRef Name="JOBID" />
+            </Principal>
+            <Dependent Role="MONSTER">
+              <PropertyRef Name="JOBID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AdventurersGuildDatabaseModelStoreContainer">
+          <EntitySet Name="ADVENTURER" EntityType="Self.ADVENTURER" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CLIENT" EntityType="Self.CLIENT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="JOB" EntityType="Self.JOB" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MONSTER" EntityType="Self.MONSTER" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PERSON" EntityType="Self.PERSON" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="ADVENTURERS_FOREIGN_KEY" Association="Self.ADVENTURERS_FOREIGN_KEY">
+            <End Role="JOB" EntitySet="JOB" />
+            <End Role="ADVENTURER" EntitySet="ADVENTURER" />
+          </AssociationSet>
+          <AssociationSet Name="CLIENTS_FOREIGN_KEY" Association="Self.CLIENTS_FOREIGN_KEY">
+            <End Role="PERSON" EntitySet="PERSON" />
+            <End Role="CLIENT" EntitySet="CLIENT" />
+          </AssociationSet>
+          <AssociationSet Name="JOBS_FOREIGN_KEY" Association="Self.JOBS_FOREIGN_KEY">
+            <End Role="CLIENT" EntitySet="CLIENT" />
+            <End Role="JOB" EntitySet="JOB" />
+          </AssociationSet>
+          <AssociationSet Name="MONSTERS_FOREIGN_KEY" Association="Self.MONSTERS_FOREIGN_KEY">
+            <End Role="JOB" EntitySet="JOB" />
+            <End Role="MONSTER" EntitySet="MONSTER" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="AdventurersGuildDatabaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="ADVENTURER">
+          <Key>
+            <PropertyRef Name="ADVENTURERID" />
+          </Key>
+          <Property Name="ADVENTURERID" Type="Decimal" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="PERSONID" Type="Decimal" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="JOBID" Type="Decimal" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="RATING" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="SIGNUP_DATE" Type="DateTime" Precision="3" />
+          <Property Name="STATUS" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="JOB" Relationship="Self.ADVENTURERS_FOREIGN_KEY" FromRole="ADVENTURER" ToRole="JOB" />
+        </EntityType>
+        <EntityType Name="CLIENT">
+          <Key>
+            <PropertyRef Name="CLIENTID" />
+          </Key>
+          <Property Name="CLIENTID" Type="Decimal" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="PERSONID" Type="Decimal" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="BALANCE" Type="Decimal" Precision="10" Scale="0" />
+          <Property Name="ADDRESS" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="SIGNUP_DATE" Type="DateTime" Precision="3" />
+          <Property Name="JOB_COUNT" Type="Decimal" Precision="10" Scale="0" />
+          <NavigationProperty Name="PERSON" Relationship="Self.CLIENTS_FOREIGN_KEY" FromRole="CLIENT" ToRole="PERSON" />
+          <NavigationProperty Name="JOB" Relationship="Self.JOBS_FOREIGN_KEY" FromRole="CLIENT" ToRole="JOB" />
+        </EntityType>
+        <EntityType Name="JOB">
+          <Key>
+            <PropertyRef Name="JOBID" />
+          </Key>
+          <Property Name="JOBID" Type="Decimal" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="CLIENTID" Type="Decimal" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="REGION" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="REWARD" Type="Decimal" Precision="10" Scale="0" />
+          <Property Name="CHALLANGE_RATING" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="START_DATE" Type="DateTime" Precision="3" />
+          <Property Name="END_DATE" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="ADVENTURER" Relationship="Self.ADVENTURERS_FOREIGN_KEY" FromRole="JOB" ToRole="ADVENTURER" />
+          <NavigationProperty Name="CLIENT" Relationship="Self.JOBS_FOREIGN_KEY" FromRole="JOB" ToRole="CLIENT" />
+          <NavigationProperty Name="MONSTER" Relationship="Self.MONSTERS_FOREIGN_KEY" FromRole="JOB" ToRole="MONSTER" />
+        </EntityType>
+        <EntityType Name="MONSTER">
+          <Key>
+            <PropertyRef Name="MONSTERID" />
+          </Key>
+          <Property Name="MONSTERID" Type="Decimal" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="JOBID" Type="Decimal" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="CHALLANGE_RATING" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="NAME" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="WEAKNESSES" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="RESISTANCES" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="JOB" Relationship="Self.MONSTERS_FOREIGN_KEY" FromRole="MONSTER" ToRole="JOB" />
+        </EntityType>
+        <EntityType Name="PERSON">
+          <Key>
+            <PropertyRef Name="PERSONID" />
+          </Key>
+          <Property Name="PERSONID" Type="Decimal" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="CLIENTID" Type="Decimal" Precision="10" Scale="0" />
+          <Property Name="ADVENTURERID" Type="Decimal" Precision="10" Scale="0" />
+          <Property Name="FIRST_NAME" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="LAST_NAME" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="GUILD_NAME" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CLIENT" Relationship="Self.CLIENTS_FOREIGN_KEY" FromRole="PERSON" ToRole="CLIENT" />
+        </EntityType>
+        <Association Name="ADVENTURERS_FOREIGN_KEY">
+          <End Role="JOB" Type="Self.JOB" Multiplicity="1" />
+          <End Role="ADVENTURER" Type="Self.ADVENTURER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="JOB">
+              <PropertyRef Name="JOBID" />
+            </Principal>
+            <Dependent Role="ADVENTURER">
+              <PropertyRef Name="JOBID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CLIENTS_FOREIGN_KEY">
+          <End Role="PERSON" Type="Self.PERSON" Multiplicity="1" />
+          <End Role="CLIENT" Type="Self.CLIENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PERSON">
+              <PropertyRef Name="PERSONID" />
+            </Principal>
+            <Dependent Role="CLIENT">
+              <PropertyRef Name="PERSONID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="JOBS_FOREIGN_KEY">
+          <End Role="CLIENT" Type="Self.CLIENT" Multiplicity="1" />
+          <End Role="JOB" Type="Self.JOB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CLIENT">
+              <PropertyRef Name="CLIENTID" />
+            </Principal>
+            <Dependent Role="JOB">
+              <PropertyRef Name="CLIENTID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="MONSTERS_FOREIGN_KEY">
+          <End Role="JOB" Type="Self.JOB" Multiplicity="1" />
+          <End Role="MONSTER" Type="Self.MONSTER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="JOB">
+              <PropertyRef Name="JOBID" />
+            </Principal>
+            <Dependent Role="MONSTER">
+              <PropertyRef Name="JOBID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AdventurersGuildDatabaseEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ADVENTURER" EntityType="Self.ADVENTURER" />
+          <EntitySet Name="CLIENT" EntityType="Self.CLIENT" />
+          <EntitySet Name="JOB" EntityType="Self.JOB" />
+          <EntitySet Name="MONSTER" EntityType="Self.MONSTER" />
+          <EntitySet Name="PERSON" EntityType="Self.PERSON" />
+          <AssociationSet Name="ADVENTURERS_FOREIGN_KEY" Association="Self.ADVENTURERS_FOREIGN_KEY">
+            <End Role="JOB" EntitySet="JOB" />
+            <End Role="ADVENTURER" EntitySet="ADVENTURER" />
+          </AssociationSet>
+          <AssociationSet Name="CLIENTS_FOREIGN_KEY" Association="Self.CLIENTS_FOREIGN_KEY">
+            <End Role="PERSON" EntitySet="PERSON" />
+            <End Role="CLIENT" EntitySet="CLIENT" />
+          </AssociationSet>
+          <AssociationSet Name="JOBS_FOREIGN_KEY" Association="Self.JOBS_FOREIGN_KEY">
+            <End Role="CLIENT" EntitySet="CLIENT" />
+            <End Role="JOB" EntitySet="JOB" />
+          </AssociationSet>
+          <AssociationSet Name="MONSTERS_FOREIGN_KEY" Association="Self.MONSTERS_FOREIGN_KEY">
+            <End Role="JOB" EntitySet="JOB" />
+            <End Role="MONSTER" EntitySet="MONSTER" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="AdventurersGuildDatabaseModelStoreContainer" CdmEntityContainer="AdventurersGuildDatabaseEntities">
+          <EntitySetMapping Name="ADVENTURER">
+            <EntityTypeMapping TypeName="AdventurersGuildDatabaseModel.ADVENTURER">
+              <MappingFragment StoreEntitySet="ADVENTURER">
+                <ScalarProperty Name="ADVENTURERID" ColumnName="ADVENTURERID" />
+                <ScalarProperty Name="PERSONID" ColumnName="PERSONID" />
+                <ScalarProperty Name="JOBID" ColumnName="JOBID" />
+                <ScalarProperty Name="RATING" ColumnName="RATING" />
+                <ScalarProperty Name="SIGNUP_DATE" ColumnName="SIGNUP_DATE" />
+                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CLIENT">
+            <EntityTypeMapping TypeName="AdventurersGuildDatabaseModel.CLIENT">
+              <MappingFragment StoreEntitySet="CLIENT">
+                <ScalarProperty Name="CLIENTID" ColumnName="CLIENTID" />
+                <ScalarProperty Name="PERSONID" ColumnName="PERSONID" />
+                <ScalarProperty Name="BALANCE" ColumnName="BALANCE" />
+                <ScalarProperty Name="ADDRESS" ColumnName="ADDRESS" />
+                <ScalarProperty Name="SIGNUP_DATE" ColumnName="SIGNUP_DATE" />
+                <ScalarProperty Name="JOB_COUNT" ColumnName="JOB_COUNT" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="JOB">
+            <EntityTypeMapping TypeName="AdventurersGuildDatabaseModel.JOB">
+              <MappingFragment StoreEntitySet="JOB">
+                <ScalarProperty Name="JOBID" ColumnName="JOBID" />
+                <ScalarProperty Name="CLIENTID" ColumnName="CLIENTID" />
+                <ScalarProperty Name="REGION" ColumnName="REGION" />
+                <ScalarProperty Name="REWARD" ColumnName="REWARD" />
+                <ScalarProperty Name="CHALLANGE_RATING" ColumnName="CHALLANGE_RATING" />
+                <ScalarProperty Name="START_DATE" ColumnName="START_DATE" />
+                <ScalarProperty Name="END_DATE" ColumnName="END_DATE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MONSTER">
+            <EntityTypeMapping TypeName="AdventurersGuildDatabaseModel.MONSTER">
+              <MappingFragment StoreEntitySet="MONSTER">
+                <ScalarProperty Name="MONSTERID" ColumnName="MONSTERID" />
+                <ScalarProperty Name="JOBID" ColumnName="JOBID" />
+                <ScalarProperty Name="CHALLANGE_RATING" ColumnName="CHALLANGE_RATING" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="WEAKNESSES" ColumnName="WEAKNESSES" />
+                <ScalarProperty Name="RESISTANCES" ColumnName="RESISTANCES" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PERSON">
+            <EntityTypeMapping TypeName="AdventurersGuildDatabaseModel.PERSON">
+              <MappingFragment StoreEntitySet="PERSON">
+                <ScalarProperty Name="PERSONID" ColumnName="PERSONID" />
+                <ScalarProperty Name="CLIENTID" ColumnName="CLIENTID" />
+                <ScalarProperty Name="ADVENTURERID" ColumnName="ADVENTURERID" />
+                <ScalarProperty Name="FIRST_NAME" ColumnName="FIRST_NAME" />
+                <ScalarProperty Name="LAST_NAME" ColumnName="LAST_NAME" />
+                <ScalarProperty Name="GUILD_NAME" ColumnName="GUILD_NAME" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

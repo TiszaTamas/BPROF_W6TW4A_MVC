@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="78f99e97324c431599911df315ca09c8" Name="Diagram1" ZoomLevel="55">
+        <EntityTypeShape EntityType="AdventurersGuildDatabaseModel.ADVENTURER" Width="1.5" PointX="7.5" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="AdventurersGuildDatabaseModel.CLIENT" Width="1.5" PointX="3" PointY="2.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="AdventurersGuildDatabaseModel.JOB" Width="1.5" PointX="5.25" PointY="2.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="AdventurersGuildDatabaseModel.MONSTER" Width="1.5" PointX="7.5" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="AdventurersGuildDatabaseModel.PERSON" Width="1.5" PointX="0.75" PointY="2.625" IsExpanded="true" />
+        <AssociationConnector Association="AdventurersGuildDatabaseModel.ADVENTURERS_FOREIGN_KEY" ManuallyRouted="false" />
+        <AssociationConnector Association="AdventurersGuildDatabaseModel.CLIENTS_FOREIGN_KEY" ManuallyRouted="false" />
+        <AssociationConnector Association="AdventurersGuildDatabaseModel.JOBS_FOREIGN_KEY" ManuallyRouted="false" />
+        <AssociationConnector Association="AdventurersGuildDatabaseModel.MONSTERS_FOREIGN_KEY" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
